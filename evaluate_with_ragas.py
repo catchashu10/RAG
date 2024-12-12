@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 # from datasets import load_dataset
-from ragas import EvaluationDataset, evaluate
+from ragas import evaluation as eval
+from ragas import EvaluationDataset
 from ragas.metrics import (
     LLMContextRecall,
     Faithfulness,
@@ -47,10 +48,10 @@ eval_dataset = EvaluationDataset.from_pandas(df)
 # eval_dataset = EvaluationDataset.from_hf_dataset(dataset["eval"])
 
 # OpenAI key to be set in the environment
-# os.environ["OPENAI_API_KEY"] = "your-openai-key"
+os.environ["OPENAI_API_KEY"] = "<REPLACE ME>"
 
 # Initialize evaluator LLM and embeddings
-evaluator_llm = LangchainLLMWrapper(ChatOpenAI(model="gpt-4o", temperature=0.0))
+evaluator_llm = LangchainLLMWrapper(ChatOpenAI(model="gpt-4o", temperature=0.0))  # should temperature really be 0.0?
 evaluator_embeddings = LangchainEmbeddingsWrapper(OpenAIEmbeddings())
 
 # Select metrics
@@ -65,15 +66,15 @@ metrics = [
 ]
 
 # Run evaluation
-results = evaluate(dataset=eval_dataset, metrics=metrics)
+results = eval.evaluate(dataset=eval_dataset, metrics=metrics)
 
 # Storing in a dataframe for quick analysis
-df = results.to_pandas()
-print(df.head())
+results = results.to_pandas()
+print(results.head())
 
 # Average scores for each metric
 print("Average Results:")
-mean_scores = df.mean()
+mean_scores = results.select_dtypes(include=np.number).mean()
 print(mean_scores)
 
 # List and calculate number of metrics
@@ -96,4 +97,3 @@ ax.plot(angles, values, linewidth=2, linestyle='solid')
 ax.fill(angles, values, alpha=0.4)
 plt.title('RAGAS Metrics Radar Chart', size=16, y=1.1)
 plt.show()
-
