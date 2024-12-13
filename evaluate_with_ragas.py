@@ -72,6 +72,8 @@ results = eval.evaluate(dataset=eval_dataset, metrics=metrics)
 results = results.to_pandas()
 print(results.head())
 
+results.to_csv("evaluation_results.csv", index=False)
+
 # Average scores for each metric
 print("Average Results:")
 mean_scores = results.select_dtypes(include=np.number).mean()
@@ -96,4 +98,7 @@ ax.set_ylim(0, 1)
 ax.plot(angles, values, linewidth=2, linestyle='solid')
 ax.fill(angles, values, alpha=0.4)
 plt.title('RAGAS Metrics Radar Chart', size=16, y=1.1)
+
+plt.savefig("radar_chart.png", bbox_inches="tight")
+
 plt.show()
