@@ -17,7 +17,7 @@ from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import LangchainEmbeddingsWrapper
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-def evaluate_with_ragas(data, api_key, output_file_name, log=False):
+def evaluate_with_ragas(data, api_key, output_file_name):
     '''
     data = {
         "user_input": List[str],
@@ -51,14 +51,14 @@ def evaluate_with_ragas(data, api_key, output_file_name, log=False):
 
     # Storing in a dataframe for quick analysis
     results = results.to_pandas()
-    if log: print(results.head())
+    print(results.head())
 
     results.to_csv(f"{output_file_name}.csv", index=False)
 
     # Average scores for each metric
-    if log: print("Average Results:")
+    print("Average Results:")
     mean_scores = results.select_dtypes(include=np.number).mean()
-    if log: print(mean_scores)
+    print(mean_scores)
 
     # List and calculate number of metrics
     metrics_names = mean_scores.index.tolist()
