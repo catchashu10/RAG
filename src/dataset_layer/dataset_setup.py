@@ -104,8 +104,8 @@ def create_train_val_dataset(data: Dict) -> Dataset:
 
     return Dataset.from_dict(
         {
-            "anchor": anchors,
-            "positive": positives,
+            "question": anchors,
+            "answer": positives,
         }
     )
 

@@ -3,7 +3,6 @@ import random
 from typing import Dict, List, Tuple
 from datasets import Dataset, DatasetDict
 
-
 """
     This code takes the formatted JSON input data and process it into the final 'train', 'val' and 'test' data in the format that will be 
     Input Data:
@@ -104,8 +103,8 @@ def create_train_val_dataset(data: Dict) -> Dataset:
 
     return Dataset.from_dict(
         {
-            "anchor": anchors,
-            "positive": positives,
+            "question": anchors,
+            "answer": positives,
         }
     )
 
@@ -177,14 +176,14 @@ def get_datasets(
     )
 
 
-# Example usage
-# file_path = "path to the formatted dataset"
-# datasets = get_datasets(file_path)
-
-# Output the sizes of the datasets to verify
-# print(f"Train dataset size: {len(datasets['train'])}")
-# print(f"Validation dataset size: {len(datasets['validation'])}")
-# print(f"Test dataset size: {len(datasets['test'])}")
-
-# # Verify the dataset dictionary
-# print(datasets)
+def load_dataset_from_huggingface(dataset_name: str="", test_size: float = 0.25, seed: int = 42):
+    file_path = "/mnt/project_vol/foundation_model/src/dataset_layer/queries_corpus_300.json"
+    datasets = get_datasets(
+        file_path, 1, 0
+    )  # Train 90% Validation 0 and Test 10% [At the end of complete training]
+    corpus = datasets["evaluator_train"]["corpus"]
+    corpus = list(corpus.values())
+    train_ds = datasets
+    test_ds = datasets["train"]
+    # split = ds["train"].train_test_split(test_size=test_size, seed=seed)
+    return train_ds, test_ds, corpus

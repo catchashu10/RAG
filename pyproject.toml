@@ -1,0 +1,44 @@
+[project]
+name = "foundation-model"
+version = "0.1.0"
+description = "Retrieval Augmented Generation Project for CS839"
+dependencies = [
+    "python-dotenv>=1.0.1",
+    "langchain>=0.3.11",
+    "langgraph>=0.2.58",
+    "pydantic>=2.10.3",
+    "langchain-openai>=0.2.12",
+    "torch>=2.5.1",
+    "sentence-transformers>=3.3.1",
+    "datasets>=3.2.0",
+    "cohere>=5.13.3",
+    "transformers[torch]>=4.47.0",
+    "wandb>=0.19.1",
+    "flashrank>=0.2.9",
+    "ragas>=0.2.8",
+    "matplotlib>=3.9.4",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[project.scripts]
+"save-graph" = "rag_pipeline.main:save_graph_to_file"
+"rag-pipeline" = "rag_pipeline.main:respond_to_prompt"
+"evaluate" = "rag_pipeline.main:evaluate_without_rerank"
+"evaluate-rerank" = "rag_pipeline.main:evaluate_with_rerank"
+"fine-tune-embedding" = "rag_pipeline.main:run_fine_tune"
+"evaluate-ragas" = "rag_pipeline.main:evaluate_ragas"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_pipeline"]
